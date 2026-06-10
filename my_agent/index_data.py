@@ -11,14 +11,17 @@ import os
 import re
 import sys
 import requests
+
+# Load env before any package imports to avoid agent.py running first via __init__.py
+_current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _current_dir)
+
 from dotenv import load_dotenv
+load_dotenv(os.path.join(_current_dir, ".env"), override=True)
+
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
-
-from my_agent.calligraphy_knowledge import KNOWLEDGE_DOCS
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-load_dotenv(os.path.join(current_dir, ".env"))
+from calligraphy_knowledge import KNOWLEDGE_DOCS  # direct import, skips __init__.py
 
 INDEX_NAME = "calligraphy"
 
