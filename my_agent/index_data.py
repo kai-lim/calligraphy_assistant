@@ -136,6 +136,7 @@ def main() -> None:
     success, failed = bulk(es, all_docs)
     print(f"Indexed {success} documents. Failed: {failed}.")
 
+    es.indices.refresh(index=INDEX_NAME)
     count = es.count(index=INDEX_NAME)["count"]
     print(f"Total documents in '{INDEX_NAME}': {count}")
 
