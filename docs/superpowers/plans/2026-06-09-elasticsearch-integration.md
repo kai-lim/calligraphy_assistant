@@ -17,7 +17,7 @@
 | `my_agent/calligraphy_knowledge.py` | Create | Chinese calligraphy knowledge documents as a Python list |
 | `my_agent/index_data.py` | Create | One-time script: create ES index + bulk index posts + knowledge docs |
 | `my_agent/agent.py` | Modify | Add Elastic MCP toolset + update agent instruction |
-| `my_agent/.env` | Modify (manual) | Add `ELASTIC_CLOUD_ID`, `ELASTIC_API_KEY`, `ELASTIC_MCP_URL` |
+| `my_agent/.env` | Modify (manual) | Add `ELASTIC_URL`, `ELASTIC_API_KEY`, `ELASTIC_MCP_URL` |
 | Cloud Run service | Modify (UI) | Add same three env vars |
 
 ---
@@ -224,7 +224,7 @@ git commit -m "feat: add Chinese calligraphy knowledge documents"
   Add these three lines to `my_agent/.env` (alongside existing Instagram vars):
 
   ```
-  ELASTIC_CLOUD_ID=your-cloud-id-here
+  ELASTIC_URL=your-cloud-id-here
   ELASTIC_API_KEY=your-api-key-here
   ELASTIC_MCP_URL=https://your-elastic-mcp-endpoint-url-here
   ```
@@ -267,7 +267,7 @@ INDEX_NAME = "calligraphy"
 
 
 def build_es_client() -> Elasticsearch:
-    cloud_id = os.environ["ELASTIC_CLOUD_ID"]
+    cloud_id = os.environ["ELASTIC_URL"]
     api_key = os.environ["ELASTIC_API_KEY"]
     return Elasticsearch(cloud_id=cloud_id, api_key=api_key)
 
@@ -544,7 +544,7 @@ git commit -m "feat: add Elastic MCP toolset and update agent instruction for du
 ```bash
 gcloud run services update YOUR_SERVICE_NAME \
   --region YOUR_REGION \
-  --update-env-vars ELASTIC_CLOUD_ID="$(grep ELASTIC_CLOUD_ID my_agent/.env | cut -d= -f2)" \
+  --update-env-vars ELASTIC_URL="$(grep ELASTIC_URL my_agent/.env | cut -d= -f2)" \
   --update-env-vars ELASTIC_API_KEY="$(grep ELASTIC_API_KEY my_agent/.env | cut -d= -f2)" \
   --update-env-vars ELASTIC_MCP_URL="$(grep ELASTIC_MCP_URL my_agent/.env | cut -d= -f2)"
 ```

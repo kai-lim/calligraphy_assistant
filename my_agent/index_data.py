@@ -24,9 +24,9 @@ INDEX_NAME = "calligraphy"
 
 
 def build_es_client() -> Elasticsearch:
-    cloud_id = os.environ["ELASTIC_CLOUD_ID"]
+    url = os.environ["ELASTIC_URL"]
     api_key = os.environ["ELASTIC_API_KEY"]
-    return Elasticsearch(cloud_id=cloud_id, api_key=api_key)
+    return Elasticsearch(url, api_key=api_key)
 
 
 def create_index(es: Elasticsearch) -> None:
